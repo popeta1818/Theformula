@@ -1,30 +1,4 @@
-import dbPromise from '../db.js';
-import bcrypt from 'bcrypt';
-
-export const registerUser = async (req, res) => {
-  const { nombre, apellido, correo, telefono, contrasena } = req.body;
-
-  try {
-    const db = await dbPromise;
-    const hashedPassword = await bcrypt.hash(contrasena, 10);
-
-    const result = await db.run(
-      `INSERT INTO usuarios (nombre, apellido, correo, telefono, contraseña)
-       VALUES (?, ?, ?, ?, ?)`,
-      [nombre, apellido, correo, telefono, hashedPassword]
-    );
-
-    const user = await db.get(
-      `SELECT id, nombre, correo, rol FROM usuarios WHERE id = ?`,
-      result.lastID
-    );
-
-    res.status(201).json({ success: true, user });
-  } catch (err) {
-    console.error('Registration error:', err);
-    res.status(500).json({ error: 'Error en el servidor' });
-  }
-};
+import jwt from 'jsonwebtoken'; // Asegúrate de tenerlo instalado
 
 export const loginUser = async (req, res) => {
   const { correo, contrasena } = req.body;
@@ -40,44 +14,20 @@ export const loginUser = async (req, res) => {
       return res.status(401).json({ success: false, error: 'Usuario no encontrado' });
     }
 
-    const isMatch = contrasena === user.contraseña;
-
-    if (!isMatch) {
-      return res.status(401).json({ success: false, error: 'Contraseña incorrecta (sin hash)' });
+    if (contrasena !== user.contraseña) {
+      return res.status(401).json({ success: false, error: 'Contraseña incorrecta' });
     }
-    
+
+    const token = jwt.sign({ id: user.id, rol: user.rol }, 'secreto_super_seguro', {
+      expiresIn: '1d',
+    });
 
     delete user.contraseña;
 
-    res.status(200).json({ success: true, user });
+    // ✅ Devuelve también el token
+    res.status(200).json({ success: true, user, token });
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ success: false, error: 'Error en el servidor' });
   }
 };
-export const crearAdmin = async (req, res) => {
-  try {
-    const db = await dbPromise;
-
-    const correoUnico = `admin${Date.now()}@theformula.com`; // ← genera un correo único
-    const contrasena = 'admin123';
-
-    await db.run(
-      `INSERT INTO usuarios (nombre, apellido, correo, telefono, contraseña, rol)
-       VALUES (?, ?, ?, ?, ?, ?)`,
-      ['Admin', 'Prueba', correoUnico, '0000000000', contrasena, 'admin']
-    );
-
-    res.status(201).json({ 
-      success: true, 
-      message: 'Admin creado correctamente', 
-      correo: correoUnico 
-    });
-
-  } catch (err) {
-    console.error('Error al crear admin:', err);
-    res.status(500).json({ error: 'Error en el servidor al crear admin' });
-  }
-};
-
-

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 
 import AgregarProducto from './components/AgregarProducto';
 import DetallesProducto from './components/DetallesProducto';
@@ -11,6 +11,8 @@ import ActualizarInventario from './components/ActualizarInventario';
 import PanelAdmin from './pages/PanelAdmin';
 import AdminRoute from './components/AdminRoute';
 import Productos from './components/Productos';
+import NotFound from './pages/NotFound';
+
 
 import HomePage from './pages/HomePage';
 import Login from './pages/Login';
@@ -27,7 +29,12 @@ function App() {
       <Route path="/" element={<HomePage />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/cart" element={<Cart />} />
+      <Route path="/cart" element={<Cart />} /> 
+
+      {/* Redirección de respaldo si alguien entra mal */}
+      <Route path="/agregar-producto" element={<Navigate to="/admin/agregar-producto" replace />} />
+      <Route path="*" element={<NotFound />} />
+
 
       {/* Rutas protegidas del admin */}
       <Route
@@ -47,6 +54,7 @@ function App() {
         <Route path="PasoMarca" element={<PasoMarca />} />
         <Route path="Imagen" element={<Imagen />} />
         <Route path="Final" element={<Final />} />
+
       </Route>
     </Routes>
   );

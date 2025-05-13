@@ -1,21 +1,28 @@
 import React from 'react';
-import { useCart } from '../context/CartContext'; // Import the cart hook
+import { addItemToCart } from '../services/cartService';
+import { useAuth } from '../context/authContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product, isDeal = false }) => {
-  const { addToCart } = useCart(); // Get the addToCart function from context
+  const { user } = useAuth();
 
-  const handleAddToCart = () => {
-    // Create a clean product object for the cart
-    const cartProduct = {
-      id: product.id,
-      name: product.name,
-      price: product.price,
-      image: product.image,
-      // Include any other necessary fields
-    };
-    console.log('Adding to cart:', cartProduct); // Debug log
-    addToCart(cartProduct);
+  const handleAddToCart = async () => {
+    if (!user || !user.token) {
+      alert("Debes iniciar sesión para añadir productos al carrito.");
+      return;
+    }
+
+    try {
+      const result = await addItemToCart(product.id, 1, user.token);
+      if (result.items) {
+        alert('✅ Producto añadido al carrito.');
+      } else {
+        alert('❌ Error al añadir al carrito: ' + result.error);
+      }
+    } catch (error) {
+      console.error('Error al añadir al carrito:', error);
+      alert('❌ Ocurrió un error al intentar añadir al carrito.');
+    }
   };
 
   return (
@@ -28,11 +35,10 @@ const ProductCard = ({ product, isDeal = false }) => {
       <div className="product-image-container">
         {product.image && (
           <img 
-          src={product.image.startsWith('data:') ? product.image : product.image} 
-          alt={product.name} 
-          className="product-image"
-        />
-        
+            src={product.image.startsWith('data:') ? product.image : product.image} 
+            alt={product.name} 
+            className="product-image"
+          />
         )}
       </div>
       <div className="product-info">
