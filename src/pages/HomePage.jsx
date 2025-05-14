@@ -15,21 +15,21 @@ const HomePage = () => {
       name: "C4 Ripped Pre-entrenador",
       price: 120.00,
       rating: 4.5,
-      image: "/images/c4.jpg"
+      image: "c4.jpg"
     },
     {
       id: 2,
       name: "Creatina Monohidrato 300g",
       price: 450.00,
       rating: 4.8,
-      image: "/images/creatina.jpg"
+      image: "creatina.jpg"
     },
     {
       id: 3,
       name: "Gold Standard 100% Whey Protein",
       price: 960.00,
       rating: 4.9,
-      image: "/images/whey-protein.jpg"
+      image: "whey-protein.jpg"
     }
   ]);
   const [flashDeals, setFlashDeals] = useState([
@@ -39,7 +39,7 @@ const HomePage = () => {
       price: 120.00,
       originalPrice: 150.00,
       rating: 4.5,
-      image: "/images/c4.jpg",
+      image: "c4.jpg",
       discount: 20
     },
     {
@@ -48,15 +48,15 @@ const HomePage = () => {
       price: 450.00,
       originalPrice: 500.00,
       rating: 4.8,
-      image: "/images/creatina.jpg",
+      image: "creatina.jpg",
       discount: 10
     }
   ]);
   const [categories, setCategories] = useState([
-    { id: 1, name: "Proteínas", image: "/images/proteinas.jpg" },
-    { id: 2, name: "Pre-entrenos", image: "/images/preworkout.jpg" },
-    { id: 3, name: "Creatinas", image: "/images/creatinas.jpg" },
-    { id: 4, name: "Vitaminas", image: "/images/vitaminas.jpg" }
+    { id: 1, name: "Proteínas", image: "proteinas.jpg" },
+    { id: 2, name: "Pre-entrenos", image: "preworkout.jpg" },
+    { id: 3, name: "Creatinas", image: "creatinas.jpg" },
+    { id: 4, name: "Vitaminas", image: "vitaminas.jpg" }
   ]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);

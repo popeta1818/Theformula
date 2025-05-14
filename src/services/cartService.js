@@ -10,13 +10,16 @@ export const addItemToCart = async (productId, quantity = 1, token) => {
       body: JSON.stringify({ productId, quantity }),
     });
 
+    const data = await response.json();
+
     if (!response.ok) {
-      throw new Error('Error al añadir al carrito');
+      console.error('❌ Error desde backend:', data);
+      throw new Error(data.error || 'Error desconocido al añadir al carrito');
     }
 
-    return await response.json();
+    return data;
   } catch (err) {
-    console.error('Error en addItemToCart:', err);
+    console.error('❌ Error en addItemToCart:', err.message);
     return { success: false, error: err.message };
   }
 };

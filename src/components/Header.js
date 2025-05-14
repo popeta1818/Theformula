@@ -49,7 +49,10 @@ function Header() {
           <img src={busqueda} alt="Buscar" className="search-icon" />
         </div>
         <button><img src={corazon} alt="Favoritos" /></button>
-        <button><img src={carrito} alt="Carrito" /></button>
+        <Link to="/cart">
+  <img src={carrito} alt="Carrito" />
+</Link>
+
 
         <div className="user-panel-container" ref={panelRef}>
           <button onClick={togglePanel}><img src={usuario} alt="Usuario" /></button>

@@ -11,7 +11,7 @@ import ActualizarInventario from './components/ActualizarInventario';
 import PanelAdmin from './pages/PanelAdmin';
 import AdminRoute from './components/AdminRoute';
 import Productos from './components/Productos';
-import NotFound from './pages/NotFound';
+
 
 
 import HomePage from './pages/HomePage';
@@ -33,7 +33,6 @@ function App() {
 
       {/* Redirección de respaldo si alguien entra mal */}
       <Route path="/agregar-producto" element={<Navigate to="/admin/agregar-producto" replace />} />
-      <Route path="*" element={<NotFound />} />
 
 
       {/* Rutas protegidas del admin */}

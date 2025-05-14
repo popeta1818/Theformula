@@ -7,7 +7,7 @@ const Dimensiones = () => {
   const navigate = useNavigate();
 
   const handleNext = () => {
-    navigate('/pasoMarca'); // 🔁 Ruta corregida
+    navigate('/admin/PasoMarca'); // 🔁 Ruta corregida
   };
 
   return (

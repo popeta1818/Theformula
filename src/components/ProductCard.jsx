@@ -4,16 +4,16 @@ import { useAuth } from '../context/authContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product, isDeal = false }) => {
-  const { user } = useAuth();
+  const { user, token } = useAuth();
 
   const handleAddToCart = async () => {
-    if (!user || !user.token) {
+    if (!user || !token) {
       alert("Debes iniciar sesión para añadir productos al carrito.");
       return;
     }
 
     try {
-      const result = await addItemToCart(product.id, 1, user.token);
+      const result = await addItemToCart(product.id, 1, token);
       if (result.items) {
         alert('✅ Producto añadido al carrito.');
       } else {
@@ -25,6 +25,13 @@ const ProductCard = ({ product, isDeal = false }) => {
     }
   };
 
+  const getImageSrc = () => {
+    if (product.image?.startsWith('data:') || product.image?.startsWith('http')) {
+      return product.image;
+    }
+    return `/images/${product.image}`; // Asegúrate que `product.image` sea algo como "c4.jpg"
+  };
+
   return (
     <div className="product-card">
       {isDeal && (
@@ -34,11 +41,13 @@ const ProductCard = ({ product, isDeal = false }) => {
       )}
       <div className="product-image-container">
         {product.image && (
-          <img 
-            src={product.image.startsWith('data:') ? product.image : product.image} 
-            alt={product.name} 
-            className="product-image"
-          />
+<img 
+  src={`/images/${product.image}`} 
+  alt={product.name} 
+  className="product-image"
+/>
+
+
         )}
       </div>
       <div className="product-info">
